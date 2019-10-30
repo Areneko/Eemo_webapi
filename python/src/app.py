@@ -23,9 +23,6 @@ def invalid_uri(error):
 # Post url
 @app.route('/', methods=['GET'])
 def analyze_image():
-    # Subscription key
-    subscription_key = '74c0278230bb4aa6aac723d66cc1cdd2'
-
     # Post header
     headers = {
         'Content-Type': 'application/octet-stream',
