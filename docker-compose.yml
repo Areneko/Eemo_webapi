@@ -7,4 +7,5 @@ services:
     volumes:
       - ./python/src:/app
     tty: true
+    env_file: .env
     container_name: flask

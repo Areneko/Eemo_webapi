@@ -8,3 +8,5 @@ logs:
 	docker-compose logs
 ps:
 	docker-compose ps
+bash:
+	docker-compose exec flask ash
