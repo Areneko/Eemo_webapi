@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from markovify import NewlineText
 import requests as req
-import os, sys
+import os, sys, base64
 
 app = Flask(__name__)
 
@@ -10,15 +10,16 @@ if 'ENDPOINT' in os.environ and 'SUBSCRIPTION_KEY' in os.environ:
     endpoint = os.environ['ENDPOINT']
     subscription_key = os.environ['SUBSCRIPTION_KEY']
 
-# Post url
+# Test url
 @app.route('/', methods=['POST'])
+def test():
+    return 'test'
+
+# Post url
+@app.route('/api/generate', methods=['POST'])
 def analyze_image():
     # Get image data from body
-    try:
-        json = request.json()
-        image_data = json['image_data']
-    except Exception as e:
-        return error_handler(e)
+    file = request.files['file']
 
     # Post header
     headers = {
@@ -33,7 +34,11 @@ def analyze_image():
     }
 
     # Call API and get tags
-    res = req.post(endpoint, headers=headers, params=params, data=image_data)
+    try:
+        res = req.post(endpoint, headers=headers, params=params, data=file)
+    except Exception(e):
+        print(e)
+    print(res.json())
     tags = res.json()['description']['tags']
 
     splited_text = open('./resources/splited.txt').read()
@@ -41,20 +46,19 @@ def analyze_image():
 
     for tag in tags:
         try:
-            sentence = text_model.make_sentence_with_start(tag, tries=300, max_overlap_ratio=0.9).replace(' ', '')
+            sentence = text_model.make_sentence_with_start(tag, tries=300, max_overlap_ratio=0.7).replace(' ', '')
             return sentence
         except:
             pass
+    return 'Could not create sentence'
 
 # Error handling
 @app.errorhandler(Exception)
 def error_handler(e):
     return jsonify({
-        'error': {
-            'type': e.name,
-            'message': e.description
-        }
-    }), e.code
+        'error': True,
+        'message': 'Some error occured in server.'
+    }), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
