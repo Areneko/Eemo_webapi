@@ -52,4 +52,4 @@ class Setup:
 
 if __name__ == '__main__':
     setup = Setup()
-    setup.separate_text('./resources/not_separated.txt', './resources/separated.txt')
+    setup.separate_text('./resources/not_splited.txt', './resources/splited.txt')

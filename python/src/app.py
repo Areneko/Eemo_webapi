@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify
+from markovify import NewlineText
 import requests as req
 import os, sys
 
@@ -43,9 +44,17 @@ def analyze_image():
 
     # Call API and get tags
     res = req.post(endpoint, headers=headers, params=params, data=image_data)
-    tagas = res.json()['description']['tags']
+    tags = res.json()['description']['tags']
 
-    return 'ok'
+    splited_text = open('./resources/splited.txt').read()
+    text_model = NewlineText(splited_text)
+
+    for tag in tags:
+        try:
+            sentence = text_model.make_sentence_with_start(tag, tries=300, max_overlap_ratio=0.9).replace(' ', '')
+            return sentence
+        except:
+            pass
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
