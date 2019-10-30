@@ -10,3 +10,5 @@ ps:
 	docker-compose ps
 bash:
 	docker-compose exec flask ash
+setup:
+	docker-compose exec flask python setup.py

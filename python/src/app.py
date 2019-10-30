@@ -41,8 +41,10 @@ def analyze_image():
     image_path = './test.jpg'
     image_data = open(image_path, 'rb').read()
 
+    # Call API and get tags
     res = req.post(endpoint, headers=headers, params=params, data=image_data)
-    print(res.json()['description']['tags'])
+    tagas = res.json()['description']['tags']
+
     return 'ok'
 
 if __name__ == '__main__':
