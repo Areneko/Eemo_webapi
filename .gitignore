@@ -156,6 +156,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# Service Accound information
-serviceAccount.json
