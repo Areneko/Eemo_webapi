@@ -11,7 +11,7 @@ if 'ENDPOINT' in os.environ and 'SUBSCRIPTION_KEY' in os.environ:
     subscription_key = os.environ['SUBSCRIPTION_KEY']
 
 # Test url
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
 def test():
     return 'test'
 
@@ -61,4 +61,4 @@ def error_handler(e):
     }), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=os.environ['PORT'], debug=True)
