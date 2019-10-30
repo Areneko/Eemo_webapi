@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, jsonify, request
 from markovify import NewlineText
 import requests as req
 import os, sys
@@ -10,19 +10,16 @@ if 'ENDPOINT' in os.environ and 'SUBSCRIPTION_KEY' in os.environ:
     endpoint = os.environ['ENDPOINT']
     subscription_key = os.environ['SUBSCRIPTION_KEY']
 
-# 404 Not found
-@app.errorhandler(404)
-def invalid_uri(error):
-    return jsonify({
-        'error': {
-            'code': 'Not found',
-            'message': 'Page not found.'
-        }
-    }), 404
-
 # Post url
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST'])
 def analyze_image():
+    # Get image data from body
+    try:
+        json = request.json()
+        image_data = json['image_data']
+    except Exception as e:
+        return error_handler(e)
+
     # Post header
     headers = {
         'Content-Type': 'application/octet-stream',
@@ -34,10 +31,6 @@ def analyze_image():
         'visualFeatures': 'Description',
         'language': 'ja'
     }
-
-    # Post image data
-    image_path = './test.jpg'
-    image_data = open(image_path, 'rb').read()
 
     # Call API and get tags
     res = req.post(endpoint, headers=headers, params=params, data=image_data)
@@ -52,6 +45,16 @@ def analyze_image():
             return sentence
         except:
             pass
+
+# Error handling
+@app.errorhandler(Exception)
+def error_handler(e):
+    return jsonify({
+        'error': {
+            'type': e.name,
+            'message': e.description
+        }
+    }), e.code
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
