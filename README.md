@@ -12,6 +12,7 @@ $ cd Eemo_webapi
 
 #### Use docker
 ```
+$ cp .env.example .env (And rewirte to your values)
 $ make start
 ```
 
