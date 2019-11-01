@@ -5,7 +5,7 @@ ARG project_dir=/app
 ENV PORT 5000
 
 RUN pip install --upgrade pip && \
-    pip install flask requests janome markovify
+    pip install flask requests janome markovify python-dotenv
 
 COPY ./src /app
 

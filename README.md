@@ -8,16 +8,9 @@ $ git clone https://github.com/Areneko/Eemo_webapi.git
 $ cd Eemo_webapi
 ```
 
-### Run python
+### Run
 
-#### Use docker
 ```
-$ cp .env.example .env (And rewirte to your values)
+$ cp .env.example src/.env (And rewirte to your values)
 $ make start
-```
-
-#### Not use docker
-```
-$ pip install flask
-$ python python/src/app.py
 ```

@@ -6,9 +6,17 @@ import os, sys, base64
 app = Flask(__name__)
 
 # Set environmental values
+from dotenv import load_dotenv
+from os.path import join, dirname
+
+load_dotenv(verbose=True)
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
 if 'ENDPOINT' in os.environ and 'SUBSCRIPTION_KEY' in os.environ:
-    endpoint = os.environ['ENDPOINT']
-    subscription_key = os.environ['SUBSCRIPTION_KEY']
+    endpoint = os.environ.get('ENDPOINT')
+    subscription_key = os.environ.get('SUBSCRIPTION_KEY')
 
 # Test url
 @app.route('/', methods=['GET'])
