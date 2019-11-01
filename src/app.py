@@ -13,7 +13,7 @@ if 'ENDPOINT' in os.environ and 'SUBSCRIPTION_KEY' in os.environ:
 # Test url
 @app.route('/', methods=['GET'])
 def test():
-    return 'test'
+    return 'BIND OK'
 
 # Post url
 @app.route('/api/generate', methods=['POST'])
@@ -60,5 +60,6 @@ def error_handler(e):
         'message': 'Some error occured in server.'
     }), 500
 
+port = os.environ.get('PORT')
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=os.environ['PORT'], debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)

@@ -1,14 +1,8 @@
+build:
+	docker build . -t flask
+run:
+	docker run -v $(CURDIR)/src:/app -p 5000:5000 -it flask
 start:
-	docker-compose up --build
-restart:
-	docker-compose up
-kill:
-	docker-compose kill
-logs:
-	docker-compose logs
-ps:
-	docker-compose ps
-bash:
-	docker-compose exec flask ash
-setup:
-	docker-compose exec flask python setup.py
+	make build && make run
+prune:
+	docker system prune --force
